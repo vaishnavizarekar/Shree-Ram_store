@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/Pranav/public/css/login.css"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://codepen.io/technext/pen/WNpWeWw"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div id="container" class="container">
+      <!-- FORM SECTION -->
+      <div class="row">
+        <!-- SIGN UP -->
+        <div class="col align-items-center flex-col sign-up">
+          <div class="form-wrapper align-items-center">
+            <div class="form sign-up">
+              <div class="input-group">
+                <i class="bx bxs-user"></i>
+                <input type="text" id="Username" placeholder="Username" />
+              </div>
+              <div class="input-group">
+                <i class="bx bx-mail-send"></i>
+                <input type="email" id="Email" placeholder="Email" />
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-lock-alt"></i>
+                <input type="password" id="Password" placeholder="Password" />
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-lock-alt"></i>
+                <input
+                  type="password"
+                  id="ConfirmPassword"
+                  placeholder="Confirm password"
+                />
+              </div>
+              <button id="signupButton">Sign up</button>
+              <p>
+                <span> Already have an account? </span>
+                <b onclick="toggle()" class="pointer"> Sign in here </b>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- END SIGN UP -->
+        <!-- SIGN IN -->
+        <div class="col align-items-center flex-col sign-in">
+          <div class="form-wrapper align-items-center">
+            <div class="form sign-in">
+              <div class="input-group">
+                <i class="bx bx-mail-send"></i>
+                <input type="email" id="Emailid" placeholder="Email" />
+              </div>
+              <div class="input-group">
+                <i class="bx bxs-lock-alt"></i>
+                <input type="password" id="Passwordid" placeholder="Password" />
+              </div>
+              <button id="loginButton">Sign in</button>
+              <p>
+                <b> Forgot password? </b>
+              </p>
+              <p>
+                <span> Don't have an account? </span>
+                <b onclick="toggle()" class="pointer"> Sign up here </b>
+              </p>
+            </div>
+          </div>
+          <div class="form-wrapper"></div>
+        </div>
+        <!-- END SIGN IN -->
+      </div>
+      <!-- END FORM SECTION -->
+      <!-- CONTENT SECTION -->
+      <div class="row content-row">
+        <!-- SIGN IN CONTENT -->
+        <div class="col align-items-center flex-col">
+          <div class="text sign-in">
+            <h2>Welcome</h2>
+          </div>
+          <div class="img sign-in"></div>
+        </div>
+        <!-- END SIGN IN CONTENT -->
+        <!-- SIGN UP CONTENT -->
+        <div class="col align-items-center flex-col">
+          <div class="img sign-up"></div>
+          <div class="text sign-up">
+            <h2>Join with us</h2>
+          </div>
+        </div>
+        <!-- END SIGN UP CONTENT -->
+      </div>
+      <!-- END CONTENT SECTION -->
+    </div>
+    <script>
+      let container = document.getElementById("container");
+
+      function toggle() {
+        container.classList.toggle("sign-in");
+        container.classList.toggle("sign-up");
+      }
+
+      setTimeout(() => {
+        container.classList.add("sign-in");
+      }, 200);
+    </script>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyCPeo2yLcjXBBPFp4J2lbGGFrPtgOMBEi8",
+        authDomain: "clothing-store-216d9.firebaseapp.com",
+        projectId: "clothing-store-216d9",
+        storageBucket: "clothing-store-216d9.appspot.com",
+        messagingSenderId: "61407624484",
+        appId: "1:61407624484:web:51930f23c731d4098f87b1",
+        measurementId: "G-BT1CV8NFF4",
+      };
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+
+      const auth = getAuth();
+
+      //----- New Registration code start
+      document
+        .getElementById("signupButton")
+        .addEventListener("click", function () {
+          var username = document.getElementById("Username").value;
+          var email = document.getElementById("Email").value;
+          var password = document.getElementById("Password").value;
+          var confirmPassword =
+            document.getElementById("ConfirmPassword").value;
+
+          if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+          }
+
+          // For new registration
+          createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // Signed in
+              const user = userCredential.user;
+              console.log(user);
+              alert("Registration successful!");
+              window.location.href = "index.html"; // Redirect to index.html after successful registration
+            })
+            .catch((error) => {
+              const errorMessage = error.message;
+              console.log(errorMessage);
+              alert(errorMessage);
+            });
+        });
+      //----- End
+
+      //----- Login code start
+      document
+        .getElementById("loginButton")
+        .addEventListener("click", function () {
+          var email = document.getElementById("Emailid").value;
+          var password = document.getElementById("Passwordid").value;
+
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              // Signed in
+              const user = userCredential.user;
+              console.log(user);
+              alert("Login successful!");
+              window.location.href = "index.html"; // Redirect to index.html after successful login
+            })
+            .catch((error) => {
+              const errorMessage = error.message;
+              console.log(errorMessage);
+              alert(errorMessage);
+            });
+        });
+      //----- End
+
+      //----- Logout code start
+      document.getElementById("logout").addEventListener("click", function () {
+        signOut(auth)
+          .then(() => {
+            // Sign-out successful.
+            console.log("Sign-out successful.");
+            alert("Sign-out successful.");
+          })
+          .catch((error) => {
+            // An error happened.
+            console.log("An error occurred during sign-out:", error);
+            alert("An error occurred during sign-out: " + error.message);
+          });
+      });
+      //----- End
+    </script>
+  </body>
+</html>
